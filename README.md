@@ -9,6 +9,8 @@ Using the data from your database, set up a Golang-based RESTful API with the fo
 
 Example values are in the .env.example file, so please copy it over to `.env` and fill in the values needed.
 
+Run `go mod tidy` to get all the dependencies
+
 Then run `make` it will default to `make run` which will run the API on port 8080, you can change the port by setting
 the `API_PORT` environment variable, or changing that info in the .env file.
 
