@@ -1,0 +1,24 @@
+@host = http://{{$dotenv API_HOST}}:{{$dotenv API_PORT}}
+@cid = bafkreicuerb3ixr7hni77pr6pnmsavades3wxcuwugy4umvsjqstvpoelu
+
+### load csv file with ipfs
+POST {{host}}/ipfs HTTP/1.1
+Authorization: Basic dXNlcjpwc3dk
+Content-Type: multipart/form-data; boundary=BPBoundry
+
+--BPBoundry
+Content-Disposition: form-data; name="ipfs-list"; filename="file.csv"
+Content-Type: text/csv
+
+< ./ipfs_cids.csv
+--BPBoundry--
+
+### token list
+GET {{host}}/tokens HTTP/1.1
+Authorization: Basic dXNlcjpwc3dk
+Accept: application/json
+
+### specific token
+GET {{host}}/tokens/{{cid}} HTTP/1.1
+Authorization: Basic dXNlcjpwc3dk
+Accept: application/json
