@@ -1,9 +1,41 @@
-# Task
+# bp-task - IPFS Token Metadata API
 
-Using the data from your database, set up a Golang-based RESTful API with the following endpoints:
+This is a **Golang-based RESTful API** that serves as a middleware service for fetching and storing IPFS (InterPlanetary File System) token metadata.
 
-- GET /tokens: This endpoint should fetch all data stored in the database and return it in JSON format.
-- GET /tokens/{cid}: This endpoint should fetch only the one record for that individual IPFS cid
+## Core Functionality
+
+1. **IPFS Data Processing**: 
+   - Accepts a CSV file containing IPFS Content Identifiers (CIDs) via a POST endpoint
+   - Fetches JSON metadata from IPFS using the public gateway (`https://ipfs.io/ipfs/{cid}`)
+   - Stores this metadata in a PostgreSQL database
+
+2. **RESTful API Endpoints**:
+   - `POST /ipfs` - Upload a CSV file with IPFS CIDs to process and store metadata
+   - `GET /tokens` - Retrieve all stored token metadata from the database
+   - `GET /tokens/{cid}` - Retrieve specific token metadata by IPFS CID
+
+## Key Features
+
+- **Asynchronous Processing**: Uses goroutines with throttling (max 5 concurrent) to process IPFS CIDs
+- **Database Storage**: Uses PostgreSQL with pgx driver for efficient data storage
+- **Security**: Basic Auth middleware for API protection
+- **Logging**: Structured logging with Go's `slog` package
+- **Graceful Shutdown**: Proper server shutdown handling
+- **Timeouts**: HTTP server with read/write timeouts to prevent DoS attacks
+
+## Technical Stack
+
+- **Language**: Go 1.21.6
+- **Database**: PostgreSQL (via pgx/v5)
+- **Web Framework**: Native Go HTTP server (no external routing framework)
+- **Data Format**: JSON for API responses, CSV for input
+- **Authentication**: Basic Auth
+
+## Use Case
+This API serves as a caching layer for blockchain/NFT-related applications where IPFS is used to store token metadata. It fetches metadata from IPFS and stores it locally for faster access, rather than hitting IPFS every time metadata is needed.
+
+- GET /tokens: This endpoint fetches all data stored in the database and returns it in JSON format.
+- GET /tokens/{cid}: This endpoint fetches only the one record for that individual IPFS cid
 
 ## Running the API
 
